@@ -37,7 +37,7 @@ to the kernel flags at boot time or changing the contents of
 a running system if possible will accomplish this. NVMe drives
 do not need this parameter.
 
-***** sleep (S3) is not supported.
+***** sleep (S3) is supported.
 
 Orginal source code is available on GitHub at https://github.com/Drive-Trust-Alliance/sedutil 
 
@@ -59,7 +59,7 @@ https://github.com/Drive-Trust-Alliance/sedutil/wiki/Encrypting-your-drive
 
 ## Origin
 
-This version of sedutil is based off the original [@dta](https://github.com/Drive-Trust-Alliance/sedutil/) implementation incorporating some modifications by [@ladar](https://github.com/ladar/sedutil), [@ckamm](https://github.com/ckamm/sedutil/) and [@CyrilVanErsche](https://github.com/CyrilVanErsche/sedutil/). This fork adds support for the PBA bootloader on AMD Ryzen and AMD Ryzen mobile systems.
+This version of sedutil is based off the original [@dta](https://github.com/Drive-Trust-Alliance/sedutil/) implementation incorporating some modifications by [@ladar](https://github.com/ladar/sedutil), [@ckamm](https://github.com/ckamm/sedutil/), [@CyrilVanErsche](https://github.com/CyrilVanErsche/sedutil/) and [@badicsalex](https://github.com/badicsalex/sedutil/). This fork adds support for the PBA bootloader on AMD Ryzen and AMD Ryzen mobile systems.
 
 
 ## Notable Differences
@@ -68,6 +68,7 @@ Unique to this repo are the following modifications:
 
 * SHA512 password hashing vs SHA1 on original SEDutil
 * Compatibile with AMD Ryzen and AMD Ryzen mobile systems
+* Supports S3 sleep
 
 
 ## Build Process
