@@ -37,15 +37,13 @@ to the kernel flags at boot time or changing the contents of
 a running system if possible will accomplish this. NVMe drives
 do not need this parameter.
 
-***** sleep (S3) is supported.
+***** Sleep (S3) is __supported__.
 
 Orginal source code is available on GitHub at https://github.com/Drive-Trust-Alliance/sedutil 
 
 Linux and Windows executables and Linux PBA bootloader images for this version of SEDutil are available at https://github.com/ChubbyAnt/sedutil/releases
 
-# About SEDutil for AMD Ryzen
-
-DTA sedutil: For AMD Ryzen Systems
+# About SEDutil
 
 The sedutil project provides a CLI tool (`sedutil-cli`) capable of setting up and managing self encrypting drives (SEDs) that comply with the TCG OPAL 2.00 standard, Opalite, Pyrite, and Ruby. This project also provides a pre-boot authentication image (`linuxpba`) which can be loaded onto an encrypted disk's shadow MBR. This pre-boot authentication image allows the user enter their password and unlock SED drives during the boot process. **Using this tool can make data on the drive inaccessible!**
 
@@ -59,23 +57,31 @@ https://github.com/Drive-Trust-Alliance/sedutil/wiki/Encrypting-your-drive
 
 ## Origin
 
-This version of sedutil is based off the original [@dta](https://github.com/Drive-Trust-Alliance/sedutil/) implementation incorporating some modifications by [@ladar](https://github.com/ladar/sedutil), [@ckamm](https://github.com/ckamm/sedutil/), [@CyrilVanErsche](https://github.com/CyrilVanErsche/sedutil/) and [@badicsalex](https://github.com/badicsalex/sedutil/). This fork adds support for the PBA bootloader on AMD Ryzen and AMD Ryzen mobile systems.
+This version of sedutil is based off the original [@dta](https://github.com/Drive-Trust-Alliance/sedutil/) implementation incorporating some modifications by [@ladar](https://github.com/ladar/sedutil), [@ckamm](https://github.com/ckamm/sedutil/), [@CyrilVanErsche](https://github.com/CyrilVanErsche/sedutil/) and [@badicsalex](https://github.com/badicsalex/sedutil/). This fork adds support for the PBA bootloader on AMD Ryzen, AMD Ryzen mobile and newer Intel (11 Gen) systems.
 
 
-## Notable Differences
-
-Unique to this repo are the following modifications:
+## Notable differences
+### Diffs from original DTA implementation
 
 * SHA512 password hashing vs SHA1 on original SEDutil
-* Compatibile with AMD Ryzen and AMD Ryzen mobile systems
+* Compatibile with AMD Ryzen, AMD Ryzen mobile and new Intel (11 Gen and possibly newer) systems
 * Supports S3 sleep
 
+### Diffs from the ChubbyAnt implementation
+
+* Updated sedutil with latest DTA commits (it is now version 1.20.0)
+* Updated Buildroot to 2022.02.5 LTS
+* Updated Linux kernel to 5.15.53 LTS
+* Replaced kernel config with Gentoo general config (but removed networking, virtualization, and added DRM for better graphics support)
+* Updated and reformatted README_LTS contents and converted to markdown format
 
 ## Build Process
 
-Building is supported on Ubuntu 18.04.3 (LTS) x64. Other versions will probably not compile correctly!
+- Can be built on Ubuntu x64 systems without modifications.
+- Can also be built on non-sudo systems (e.g. Gentoo) by removing all sudo commands from the scripts. It might be necessary to run the now sudoless scripts as root!
 
-To compile your own version of `sedutil` you will need the standard development tools, an internet connection, and ~10 GB of disk space. 
+To compile your own version of `sedutil` you will need the standard development tools, an internet connection, and ~10 GB of disk space.
+Also remember to have fdisk and gptfdisk (can also be called gdisk) installed!
 
 ### Prerequisites:  
 
@@ -115,7 +121,7 @@ The various recovery and boot images will be located in the `images` directory.
 
 ## Testing
 
-This version has only been verified to boot on a HP x360 Envy AMD 3700u with a Samsung EVO 970 Plus 2TB NVMe drive. Testing has also focused only on the 64 bit UEFI images. While the other variants might work, you should exercise caution, and if possible, test the release on a computer with data that is expendable.
+This version has only been verified to boot on a Thinkpad T14 Gen2 Intel i5-1135G7 with a Samsung EVO 980 1TB NVMe drive. Testing was only performed with 64 bit UEFI images. While the other variants might work, you should exercise caution, and if possible, test the release on a computer with data that is expendable.
 
 ## Encrypting Your Drive
 
@@ -133,7 +139,10 @@ Download the rescue system for 64bit UEFI
  
 * UEFI support currently requires that Secure Boot be turned off
 
-Transfer the Rescue image to the USB stick with a program like [Balena Etcher](https://www.balena.io/etcher/).
+Transfer the Rescue image to the USB stick with a program like [Balena Etcher](https://www.balena.io/etcher/) or by using dd:
+```
+dd bs=1M if=path/to/RESCUE64-noname.img of=/dev/sdb
+```
 
 Restart your computer, enter the BIOS, and disable secure boot.  
 Note: Earlier versions of SEDutil also required BIOS enable of "legacy boot" or "CSM" or "Compatility Mode" - this is no longer required with this version of SEDutil. 
